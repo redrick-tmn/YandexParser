@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YandexParser", "YandexParser\YandexParser.csproj", "{8CFDF75F-FFF7-43B3-A528-AE4C9C701BAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YandexParser.Tests", "YandexParser.Tests\YandexParser.Tests.csproj", "{7039BB3D-912A-4E16-806D-B6BA7E6C2ED6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CFDF75F-FFF7-43B3-A528-AE4C9C701BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFDF75F-FFF7-43B3-A528-AE4C9C701BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFDF75F-FFF7-43B3-A528-AE4C9C701BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFDF75F-FFF7-43B3-A528-AE4C9C701BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7039BB3D-912A-4E16-806D-B6BA7E6C2ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7039BB3D-912A-4E16-806D-B6BA7E6C2ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7039BB3D-912A-4E16-806D-B6BA7E6C2ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7039BB3D-912A-4E16-806D-B6BA7E6C2ED6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
