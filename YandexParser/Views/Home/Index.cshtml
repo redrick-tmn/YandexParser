@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = string.Empty;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,19 +12,21 @@
     }
 </script>
 
-<h2>Search</h2>
-@using (Ajax.BeginForm("Search", new RouteValueDictionary(), new AjaxOptions()
-{
-    UpdateTargetId = "results",
-    OnBegin = "OnBegin",
-    OnSuccess = "OnSuccess"
-}, new Dictionary<string, object>() { { "class", "form-search" } }))
-{
-    <div class="input-append">
-        <input type="text" name="query" class="span6 search-query" style="height: 40px;font-size: 20pt;">
-        <button type="submit" id="search-button" class="btn btn-large btn-success" data-loading-text="<i class='icon-spin icon-spinner icon-large'></i>">
-            <i class="icon-search icon-large"></i>
-        </button>
-    </div>
-}
+<div class="">
+    <h3>Just search it!</h3>
+    @using (Ajax.BeginForm("Search", new RouteValueDictionary(), new AjaxOptions()
+        {
+            UpdateTargetId = "results",
+            OnBegin = "OnBegin",
+            OnSuccess = "OnSuccess"
+        }, new Dictionary<string, object>() { { "class", "form-search" } }))
+    {
+        <div class="input-append">
+            <input type="text" name="query" class="span6 search-query" style="height: 40px;font-size: 16pt;">
+            <button type="submit" id="search-button" class="btn btn-large btn-success" data-loading-text="<i class='icon-spin icon-spinner icon-large'></i>">
+                <i class="icon-search icon-large"></i>
+            </button>
+        </div>
+    }
+</div>
 <div id="results"></div>
