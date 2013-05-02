@@ -4,15 +4,71 @@
 }
 
 <script type="text/javascript">
-    $(function() {
+    $(function () {
+        Array.max = function (array) {
+            return Math.max.apply(Math, array);
+        };
+
+        Array.min = function (array) {
+            return Math.min.apply(Math, array);
+        };
+
+        $('#show').click(function () {
+            $('#results').tableGen('reload', {
+                filter: function (v) {
+                    var posFrom = parseInt($('#posFrom').val());
+                    var posTo = parseInt($('#posTo').val());
+                    
+                    var posFromErr = '', posToErr = '', posToClass = '', posFromClass = '';
+                    if ($('#posFrom').val() != '' && isNaN(posFrom)){
+                        posFromErr = 'Incorrect number';
+                        posFromClass = 'error'
+                    }
+                    if ($('#posTo').val() != '' && isNaN(posTo)) {
+                        posToErr = 'Incorrect number';
+                        posToClass = 'error'
+                    }
+
+                    $('#posFrom, #posTo').parent().parent().removeClass('error');
+
+                    $('#posFrom').parent().parent().addClass(posFromClass);
+                    $('#posTo').parent().parent().addClass(posToClass);
+
+
+                    $('.help-inline', $('#posFrom').parent()).text(posFromErr);
+                    $('.help-inline', $('#posTo').parent()).text(posToErr);
+
+                    var query = $('#queryText').val();
+                    if (query) {
+                        if (v.QueryText.toLowerCase().indexOf(query.toLowerCase()) === -1)
+                            return false;
+                    }
+
+                    if (!isNaN(posFrom)) {
+                        if (v.Position < posFrom)
+                            return false;
+                    }
+                    if (!isNaN(posTo)) {
+                        if (v.Position > posTo)
+                            return false;
+                    }
+                    return true;
+                }
+            });
+        });
+
         $.ajax({
             method: 'post',
             dataType: 'json',
             url: 'QueriesJson',
-            success: function(data) {
-                $('#results').tableGen({ 
+            success: function (data) {
+                var positions = $.map(data, function (e) { return e.Position; });
+                var maxPos = Math.max.apply(Math, positions);
+                var minPos = Math.min.apply(Math, positions);
+                $('#posFrom, #posTo').attr('max', maxPos).attr('min', minPos);
+                $('#results').tableGen({
                     data: data,
-                    title: 'Queries',
+                    title: $('#title').removeClass('hidden'),
                     columns: {
                         Id : {
                             visible: false
@@ -76,131 +132,36 @@
     });
 </script>
 
-<script type="text/javascript">
-    (function ($) {
-
-        function renderBody(tbody, options, colSettings, sortType) {
-            tbody.empty();
-            var data = typeof colSettings === 'undefined' || !colSettings.hasOwnProperty('sort') ? options.data : options.data.sort(colSettings.sort);
-            if (typeof sortType === 'undefined' || sortType == 'up')
-                data = data.reverse();
-            $.each(data, function (objIndex, objValue) {
-                var row = $('<tr>').appendTo(tbody);
-                $.each(options.columns, function (colIndex, colSettings) {
-
-                    if (!colSettings.visible || !objValue.hasOwnProperty(colIndex))
-                        return;
-
-                    var cellHtml = '';
-
-                    if (!colSettings.parse)
-                        cellHtml = objValue[colIndex];
-                    else
-                        cellHtml = colSettings.parse(objValue[colIndex]);
-
-                    var cell = $('<td>').append(cellHtml).appendTo(row);
-                    if (colSettings.style)
-                        cell.attr('style', colSettings.style);
-                });
-            });
-        }
-
-        function renderTable(self, options) {
-            var data = options.data;
-            var columns = options.columns;
-
-            if (options.hasOwnProperty('title')) {
-                $('<h2>').append(options.title).appendTo(self);
-            }
-        
-            if (data.length == 0)
-                return;
-                        
-            var tableDiv = $('<div>').appendTo(self),
-                table = $('<table>').addClass('table table-hover table-bordered table-striped').appendTo(tableDiv),
-                thead = $('<thead>').appendTo(table), 
-                headRow = $('<tr>').appendTo(thead),
-                tbody = $('<tbody>').appendTo(table);
-
-            $.each(columns, function(colIndex, colSettings) {
-                if (!colSettings.visible)
-                    return;
-                $('<th>').append(!colSettings.title ? colIndex : colSettings.title)
-                    .append($('<span>', { id: 'sort-span' }))
-                    .addClass('sort-header')
-                    .css('vertical-align', 'center')
-                    .appendTo(headRow)
-                    .click(function () {
-                        var sortSpan = $('#sort-span', $(this));
-                        
-                        var sort = sortSpan.data('sort');
-                        var sortType = !sort || sort == 'up' ? 'down' : 'up';
-                        $('[id=sort-span]').empty().data('sort', null);
-                        sortSpan.empty().append(' ').append($('<i>').addClass('icon-large icon-sort-' + sortType));
-                        sortSpan.data('sort', sortType);
-                        renderBody(tbody, options, colSettings, sortType);
-                    });
-            });
-
-            renderBody(tbody, options);
-
-        }
-
-        var defaultColumn = {
-            visible: true
-        };
-
-        var defaults = {
-            columns: {
-                
-            },
-            sort: []
-        };
-
-        var methods = {
-
-            init: function (options) {
-
-                var settings = this.data('data');
-                if (!settings) {
-                    settings = $.extend({}, defaults, options);
-                    $.each(settings.columns, function (colIndex, colSettings) {
-                        colSettings = $.extend({}, defaultColumn, colSettings);
-                    });
-                }
-                var self = this;
-                self.data('data', settings);
-                renderTable(self, options);
-                return this;
-            },
-
-            reload: function (versionId) {
-                var settings = this.data('data');
-                var self = this;
-                return this;
-            },
-
-            destroy: function () {
-                this.data('data').remove();
-            }
-        };
-
-
-        $.fn.tableGen = function (method) {
-
-            if (methods[method]) {
-                return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-            }
-            else if (typeof method === 'object' || !method) {
-                return methods.init.apply(this, arguments);
-            } else {
-                return $.error('Method "' + method + '" not found in tableGen plugin');
-            }
-        };
-
-
-    })(jQuery);
-
-</script>
+<div id="title" class="hidden">
+    <h2>Queries</h2>
+    <form class="form-horizontal text-left" id="filter-form" >
+        <div class="control-group">
+          <label class="control-label" for="queryText">Query text:</label>
+          <div class="controls">
+            <input type="text" id="queryText" class="input-xlarge"/>
+            <span class="help-inline"></span>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="posFrom">Postion from:</label>
+          <div class="controls">
+            <input type="number" id="posFrom" class="input-xlarge"/>
+            <span class="help-inline"></span>
+          </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="posTo">Position to:</label>
+              <div class="controls">
+                <input type="number" id="posTo" class="input-xlarge" />
+                 <span class="help-inline"></span>
+              </div>
+        </div>
+        <div class="control-group">
+             <div class="controls">
+                 <button type="button" class="btn btn-success" id="show"><i class="icon-filter icon-large"></i> Show</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <div id="results"></div>

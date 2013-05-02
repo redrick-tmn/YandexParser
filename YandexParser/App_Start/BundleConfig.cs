@@ -26,10 +26,10 @@ namespace YandexParser
             bundles.Add(new StyleBundle("~/Content/css")
                     .Include("~/Content/bootstrap.css")
                     .Include("~/Content/site.css")
-                    .Include("~/Content/bootstrap-responsive.css")
+             //       .Include("~/Content/bootstrap-responsive.css")
                     .Include("~/Content/font-awesome*"));
             bundles.Add(new ScriptBundle("~/Scripts/")
-                    .Include("~/Scripts/bootstrap.min.js"));
+                    .Include("~/Scripts/bootstrap.js"));
             /*
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

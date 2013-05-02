@@ -14,14 +14,18 @@ namespace YandexParser.Controllers
     public class YandexParser
     {
         private const string SearchQueryUri = @"http://yandex.ru/yandsearch?text={0}";
-        private const string MozillaUserAgent = @"Mozilla/5.0 (Windows; I; Windows NT 5.1; ru; rv:1.9.2.13) Gecko/20100101 Firefox/4.0";
+      //  private const string MozillaUserAgent = @"Mozilla/5.0 (Windows; I; Windows NT 5.1; ru; rv:1.9.2.13) Gecko/20100101 Firefox/4.0";
 
         public static IEnumerable<QueryResult> ParseQuery(string query)
         {
-          /*  var webClient = new WebClient();
-            webClient.Headers.Add("user-agent", MozillaUserAgent);
-            var pageHtml = webClient.DownloadString(string.Format(SearchQueryUri, Uri.UnescapeDataString(query)));*/
+#if DEBUG
             var pageHtml = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/yandex.html"));
+#else 
+            var webClient = new WebClient();
+            webClient.Encoding = System.Text.Encoding.GetEncoding("utf-8");
+           // webClient.Headers.Add("user-agent", MozillaUserAgent);
+            var pageHtml = webClient.DownloadString(string.Format(SearchQueryUri, Uri.UnescapeDataString(query)));
+#endif
             var pageHtmlDoument = new HtmlDocument();
             pageHtmlDoument.LoadHtml(pageHtml);
             var items = pageHtmlDoument.DocumentNode.SelectNodes("//div[@class='b-body-items']/ol/li[not(contains(@class, 'z-images'))]");
