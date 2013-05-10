@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Chart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#sites').change(function () {
+            var val = $(this).val();
+            $('#chart').attr('src', '/Chart/?chartType=Spline&siteId=' + val);
+        });
+    });
+</script>
+
+<h2>Chart</h2>
+<form class="form-horizontal text-left">
+    <div class="control-group">
+        <label class="control-label" for="sites">Site:</label>
+        <div class="controls">
+            @Html.DropDownList("sites", (ViewBag.Sites as IEnumerable<dynamic>).Select(x => new SelectListItem(){
+                    Text = x.Url,
+                    Value = x.Id.ToString()
+                }))
+        </div>
+    </div>
+</form>
+
+<img id="chart" src="/Chart?chartType=Spline&siteId=@((ViewBag.Sites as IEnumerable<dynamic>).First().Id)"  alt="" />

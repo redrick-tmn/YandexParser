@@ -22,11 +22,11 @@
                     var posFromErr = '', posToErr = '', posToClass = '', posFromClass = '';
                     if ($('#posFrom').val() != '' && isNaN(posFrom)){
                         posFromErr = 'Incorrect number';
-                        posFromClass = 'error'
+                        posFromClass = 'error';
                     }
                     if ($('#posTo').val() != '' && isNaN(posTo)) {
                         posToErr = 'Incorrect number';
-                        posToClass = 'error'
+                        posToClass = 'error';
                     }
 
                     $('#posFrom, #posTo').parent().parent().removeClass('error');

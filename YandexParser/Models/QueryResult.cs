@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace YandexParser.Models
 {
@@ -11,13 +7,20 @@ namespace YandexParser.Models
     {
         public virtual int Id { get; set; }
         public virtual int Position { get; set; }
-        public virtual string Url { get; set; }
         public virtual string Title { get; set; }
         public virtual string Description { get; set; }
+
         public virtual int QueryId { get; set; }
-      //  [ForeignKey("QueryId")]
         public virtual Query Query { get; set; }
 
+        public virtual int SiteId { get; set; }
+        public virtual Site Site { get; set; }
+    }
+
+    public class Site 
+    {
+        public virtual int Id { get; set; }
+        public virtual string Url { get; set; }
     }
     
     public class Query
@@ -36,5 +39,6 @@ namespace YandexParser.Models
 
         public DbSet<Query> Queries { get; set; }
         public DbSet<QueryResult> QueryResults { get; set; }
+        public DbSet<Site> Sites { get; set; }
     }
 }

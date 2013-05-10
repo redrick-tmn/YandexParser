@@ -1,9 +1,9 @@
 ﻿(function ($) {
 
-    function renderBody(tbody, options, colSettings, sortType) {
+    function renderBody(tbody, options, columnSettings, sortType) {
         tbody.empty();
-        var data = typeof colSettings === 'undefined' || !colSettings.hasOwnProperty('sort') ? options.data : options.data.sort(colSettings.sort);
-        if (typeof colSettings !== 'undefined' && typeof sortType === 'undefined' || sortType == 'up')
+        var data = typeof columnSettings === 'undefined' || columnSettings == null || !columnSettings.hasOwnProperty('sort') ? options.data : options.data.sort(columnSettings.sort);
+        if (typeof columnSettings !== 'undefined' && typeof sortType === 'undefined' || sortType == 'up')
             data = data.reverse();
         $.each(data, function (objIndex, objValue) {
             if (!options.filter(objValue))
@@ -14,8 +14,8 @@
                 if (!colSettings.visible || !objValue.hasOwnProperty(colIndex))
                     return;
 
-                var cellHtml = '';
-
+                var cellHtml;
+                
                 if (!colSettings.parse)
                     cellHtml = objValue[colIndex];
                 else
@@ -78,7 +78,7 @@
 
         },
         sort: [],
-        filter: function (v) {
+        filter: function () {
             return true;
         }
     };

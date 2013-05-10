@@ -14,16 +14,16 @@
 
 <div class="">
     <h3>Just search it!</h3>
-    @using (Ajax.BeginForm("Search", new RouteValueDictionary(), new AjaxOptions()
+    @using (Ajax.BeginForm("Search", new RouteValueDictionary(), new AjaxOptions
         {
             UpdateTargetId = "results",
             OnBegin = "OnBegin",
             OnSuccess = "OnSuccess"
-        }, new Dictionary<string, object>() { { "class", "form-search" } }))
+        }, new Dictionary<string, object> { { "class", "form-search" } }))
     {
         <div class="input-append">
-            <input type="text" name="query" class="span6 search-query" style="height: 40px;font-size: 16pt;">
-            <button type="submit" id="search-button" class="btn btn-large btn-success" data-loading-text="<i class='icon-spin icon-spinner icon-large'></i>">
+            <input type="text" name="query" class="span6 search-query" style="">
+            <button type="submit" id="search-button" class="btn  btn-success search-query" data-loading-text="<i class='icon-spin icon-spinner icon-large'></i>">
                 <i class="icon-search icon-large"></i>
             </button>
         </div>
